@@ -1,0 +1,6 @@
+#emacs
+.\#*
+\#*\#
+#qtcreator
+qtc-build
+*.txt.user
