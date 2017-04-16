@@ -16,6 +16,8 @@ Multiplexer::Multiplexer()
     memset(&client_address, 0, sizeof(sockaddr_in));
 }
 
+Multiplexer::~Multiplexer() {}
+
 void Multiplexer::acceptConnection(int socket)
 {
     int client_socket = accept(socket,

@@ -19,6 +19,7 @@ public:
 
 protected:
     Multiplexer();
+    virtual ~Multiplexer();
     pthread_t  createThread(int client_socket);
     thread_func _accept_callback = nullptr;
 

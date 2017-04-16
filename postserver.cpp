@@ -42,6 +42,7 @@ extern "C" void * accept_callback (void *data)
     auto thread_data = static_cast<Server::thread_data*>(data);
     //Read HTTP request
     int socket = thread_data->socket_fd;
+    delete thread_data;
     HTTPSocketReader reader(socket);
 
     string line;
