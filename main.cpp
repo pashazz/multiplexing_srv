@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include<iostream>
 #include "postserver.h"
+#include "kqueue_multiplexer.h"
 #include "unixobject.h"
 
 /**
@@ -27,7 +28,25 @@ int main(int argc, const char** argv)
     long port = strtol(port_str.c_str(), nullptr, 10);
     //Multiplexer is now select
 
-    auto mplexer = new SelectMultiplexer;
+    auto multiplexing = parser.retrieve<std::string>("multiplexer");
+    Multiplexer * mplexer;
+
+    if (multiplexing == "select")
+    {
+        mplexer = new SelectMultiplexer();
+    }
+#ifdef BSD
+    else if (multiplexing == "kqueue")
+    {
+        mplexer = new KqueueMultiplexer();
+    }
+#endif
+    else
+    {
+        std::cerr << "Unsupported multiplexing method: " << multiplexing << std::endl;
+        return -1;
+    }
+
     auto server = new Server(mplexer);
     server->setAcceptCallback(accept_callback); //from postserver.h
     try

@@ -66,6 +66,7 @@ extern "C" void * accept_callback (void *data)
                 const char * err_response = "HTTP/1.0 400 Bad Request\r\n\r\n";
                 if (send(socket, err_response, strlen(err_response), 0) == -1)
                     SYSC_ERR("send");
+                close(socket);
                 return nullptr;
             }
             auto str = root.get("str", "").asString();

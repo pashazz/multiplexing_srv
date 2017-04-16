@@ -10,18 +10,32 @@
 #include "server.h"
 using namespace std;
 
+Multiplexer::Multiplexer()
+    : client_address_size(sizeof(client_address))
+{
+    memset(&client_address, 0, sizeof(sockaddr_in));
+}
+
+void Multiplexer::acceptConnection(int socket)
+{
+    int client_socket = accept(socket,
+                               reinterpret_cast<struct sockaddr*>(&client_address),
+                               &client_address_size);
+    if (client_socket == -1)
+        SYSC_ERR("accept");
+
+
+    createThread(client_socket);
+}
 
 void SelectMultiplexer::startLoop(int server_socket)
 {
     if (!_accept_callback)
-        throw runtime_error("no callback given for multiplexer");
+        throw runtime_error("no callback given for Select multiplexer");
 
     fd_set following; //for sending to select()
     fd_set active; // our set comprising server socket
 
-    struct sockaddr_in client_address;
-    memset(&client_address, 0, sizeof(sockaddr_in));
-    socklen_t client_address_size = sizeof(client_address);
     FD_ZERO(&active);
     FD_SET(server_socket, &active);
 
@@ -35,15 +49,7 @@ void SelectMultiplexer::startLoop(int server_socket)
 
         if (FD_ISSET(server_socket, &following))
         {
-            int client_socket = accept(server_socket,
-                                       reinterpret_cast<struct sockaddr*>(&client_address),
-                                       &client_address_size);
-            if (client_socket == -1)
-                SYSC_ERR("accept");
-
-            //create a new thread (TODO)
-
-            createThread(client_socket);
+           acceptConnection(server_socket);
         }
     }
 }

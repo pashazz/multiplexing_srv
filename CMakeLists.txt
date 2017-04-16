@@ -20,9 +20,9 @@ endif()
 find_package(OpenSSL REQUIRED FATAL_ERROR)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
-set(SOURCES multiplexer.cpp main.cpp server.cpp postserver.cpp)
+set(SOURCES multiplexer.cpp main.cpp server.cpp postserver.cpp kqueue_multiplexer.cpp)
 #this program uses argparse for argument parsing
-set(HEADERS argparse.hpp multiplexer.h server.h unixobject.h postserver.h)
+set(HEADERS argparse.hpp multiplexer.h server.h unixobject.h postserver.h kqueue_multiplexer.h)
 
 
 
