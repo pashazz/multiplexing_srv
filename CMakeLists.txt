@@ -8,7 +8,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED FATAL_ERROR)
 
 #find jsoncpp
-find_package(jsoncpp REQUIRED FATAL_ERROR)
+find_package(Jsoncpp REQUIRED FATAL_ERROR)
 include_directories(${JSONCPP_INCLUDE_DIRS})
 
 #use homebrew to find openssl on osx

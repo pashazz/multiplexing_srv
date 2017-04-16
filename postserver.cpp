@@ -5,6 +5,7 @@
 #include <openssl/sha.h>
 #include <array>
 #include <json/json.h>
+#include <cstring>
 #include <json/writer.h>
 /**
 
